@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/geo/poi', geoControllers.handleGetPointOfInterest);
 
-router.get('/weather-details', geoControllers.handleGetCurrentWeather);
+router.get('/current-weather', geoControllers.handleGetCurrentWeather);
 
 const geoRoutes = router;
 export default geoRoutes;
