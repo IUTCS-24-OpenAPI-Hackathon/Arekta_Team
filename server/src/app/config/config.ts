@@ -1,9 +1,9 @@
 import path from 'path';
-import dotenv from 'dotenv';
+import dotenv from 'dotenv/config';
 
 // join cwd and .env file
-const envPath = path.join(process.cwd(), '.env');
-dotenv.config({ path: envPath });
+// const envPath = path.join(process.cwd(), '.env');
+// dotenv.config({ path: envPath });
 
 export default {
   port: process.env.PORT,

@@ -6,5 +6,5 @@ const router = express.Router();
 router.post("/users", userControllers.handleCreateNewUser)
 
 
-const geoRoutes = router;
-export default geoRoutes;
+const userRoutes = router;
+export default userRoutes;
