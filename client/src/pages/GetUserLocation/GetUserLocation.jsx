@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Container from "@/components/ui/shared/Container";
+import { toast } from "sonner";
 
 const GetUserLocation = () => {
 
@@ -14,25 +15,25 @@ const GetUserLocation = () => {
     }
     
      // geo success 
-    function geoSuccess(position) {
+     const geoSuccess = (position) => {
         const lat = position.coords.latitude;
         const long = position.coords.longitude;
         console.log(lat, long);
     }
     // geo error 
-    function geoError(error) {
+    const geoError = (error) => {
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            alert("User denied the request for Geolocation.");
+            toast.error("User denied the request for Geolocation.");
             break;
           case error.POSITION_UNAVAILABLE:
-            alert("Location information is unavailable.");
+            toast.error("Location information is unavailable.");
             break;
           case error.TIMEOUT:
-            alert("The request to get user location timed out.");
+            toast.error("The request to get user location timed out.");
             break;
           case error.UNKNOWN_ERROR:
-            alert("An unknown error occurred.");
+            toast.error("An unknown error occurred.");
             break;
           default:
             break;
