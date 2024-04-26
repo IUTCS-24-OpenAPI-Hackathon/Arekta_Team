@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
 
-const Container = ({children}) => {
+import { cn } from "@/lib/utils"
+
+const Container = ({children, className}) => {
   return (
-    <div className="w-full px-2 mx-auto max-w-7xl lg:px-0">{children}</div>
+    <div className={cn("w-full px-2 mx-auto max-w-7xl lg:px-0", className)}>{children}</div>
   )
 }
 

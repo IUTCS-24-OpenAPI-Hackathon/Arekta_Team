@@ -53,7 +53,7 @@ const GetUserLocation = () => {
     }
   return (
     <section className="py-5">
-        <Container>
+        <Container className='flex justify-center'>
             <div className="flex flex-col max-w-[500px]">
                 <div>
                     <form onSubmit={handleSubmitForm} className="flex items-center gap-2">
