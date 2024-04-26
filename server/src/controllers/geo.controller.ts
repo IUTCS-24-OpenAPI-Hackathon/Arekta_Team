@@ -19,6 +19,7 @@ const handleGetPointOfInterest = async (
                     [timeout:90]
                     ;
                     (
+                        node["amenity"](around:${range},${latitude},${longitude});
                         node["tourism"](around:${range},${latitude},${longitude});
                         node["place"](around:${range},${latitude},${longitude});
                     );
