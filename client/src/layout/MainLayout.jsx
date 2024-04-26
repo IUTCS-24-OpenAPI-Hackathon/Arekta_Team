@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom'
 
 const MainLayout = () => {
   return (
-    <div><Outlet/></div>
+    <div className="py-3"><Outlet/></div>
   )
 }
 

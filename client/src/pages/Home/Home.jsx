@@ -1,7 +1,10 @@
+import GetUserLocation from "../GetUserLocation/GetUserLocation"
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div>
+      <GetUserLocation/>
+    </div>
   )
 }
 
