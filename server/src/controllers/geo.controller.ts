@@ -84,8 +84,27 @@ const handleGetCurrentWeather = async (
   }
 };
 
+const handleGetPlaceDetails=async(req:Request,res:Response,next:NextFunction)=>{
+  try{
+    const latitude = req.query.latitude;
+    const longitude = req.query.longitude;
+ const result = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}`,
+    );
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'Successfully Retrieved Place Details!',
+      result: await result.json(),
+    });
+  }catch(error)
+  {
+    next(error)
+  }
+}
+
 const geoControllers = {
   handleGetPointOfInterest,
   handleGetCurrentWeather,
+  handleGetPlaceDetails
 };
 export default geoControllers;
