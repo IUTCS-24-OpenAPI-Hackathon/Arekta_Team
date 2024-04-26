@@ -1,5 +1,4 @@
 import app from './app';
-import config from './app/config/config';
 
 async function main() {
   try {
