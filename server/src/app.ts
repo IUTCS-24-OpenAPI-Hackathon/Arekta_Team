@@ -16,4 +16,7 @@ app.get('/', (req: Request, res: Response) => {
 /*-----------------GEO API-----------------*/
 app.use('/api/v1', geoRoutes);
 
+/*-----------------USER ROUTE-----------------*/
+app.use('/api/v1', geoRoutes);
+
 export default app;
