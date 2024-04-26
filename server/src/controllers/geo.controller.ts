@@ -29,6 +29,7 @@ const handleGetPointOfInterest = async (
 
     const result = await overpassReq.json();
 
+    const elements = [];
     // sanitizing the data for client
     for (let i = 0; i < result.elements.length; i++) {
       const tagsPropertyNames = Object.keys(result.elements[i].tags).filter(
@@ -36,6 +37,8 @@ const handleGetPointOfInterest = async (
           return propertyName.indexOf('name') === 0;
         },
       );
+      if (tagsPropertyNames.length == 0) continue;
+
       let name =
         tagsPropertyNames.length > 0
           ? result.elements[i].tags[tagsPropertyNames[0]]
@@ -43,7 +46,9 @@ const handleGetPointOfInterest = async (
       if (tagsPropertyNames.includes('name:en'))
         name = result.elements[i].tags['name:en'];
       result.elements[i].tags.name = name;
+      elements.push(result.elements[i]);
     }
+    result.elements = elements;
 
     res.status(200).json({
       success: true,
