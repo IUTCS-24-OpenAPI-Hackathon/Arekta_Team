@@ -28,6 +28,22 @@ const handleGetPointOfInterest = async (
 
     const result = await overpassReq.json();
 
+    // sanitizing the data for client
+    for (let i = 0; i < result.elements.length; i++) {
+      const tagsPropertyNames = Object.keys(result.elements[i].tags).filter(
+        function (propertyName) {
+          return propertyName.indexOf('name') === 0;
+        },
+      );
+      let name =
+        tagsPropertyNames.length > 0
+          ? result.elements[i].tags[tagsPropertyNames[0]]
+          : 'Unnamed Mystery!';
+      if (tagsPropertyNames.includes('name:en'))
+        name = result.elements[i].tags['name:en'];
+      result.elements[i].tags.name = name;
+    }
+
     res.status(200).json({
       success: true,
       message: 'Successfully retrieved POI around the lat long!',
