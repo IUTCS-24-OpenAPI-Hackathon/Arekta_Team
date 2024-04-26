@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import httpStatus from 'http-status';
 
 const handleGetPointOfInterest = async (
   req: Request,
@@ -50,7 +51,7 @@ const handleGetPointOfInterest = async (
     }
     result.elements = elements;
 
-    res.status(200).json({
+    res.status(httpStatus.OK  ).json({
       success: true,
       message: 'Successfully retrieved POI around the lat long!',
       result,
@@ -73,7 +74,7 @@ const handleGetCurrentWeather = async (
       `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${appid}`,
     );
 
-    res.status(200).json({
+    res.status(httpStatus.OK).json({
       success: true,
       message: 'Successfully Retrieved Current Weather Details!',
       result: await result.json(),
