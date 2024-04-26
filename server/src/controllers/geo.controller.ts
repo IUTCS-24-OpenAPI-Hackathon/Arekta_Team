@@ -51,7 +51,7 @@ const handleGetPointOfInterest = async (
     }
     result.elements = elements;
 
-    res.status(httpStatus.OK  ).json({
+    res.status(httpStatus.OK).json({
       success: true,
       message: 'Successfully retrieved POI around the lat long!',
       result,
@@ -84,11 +84,15 @@ const handleGetCurrentWeather = async (
   }
 };
 
-const handleGetPlaceDetails=async(req:Request,res:Response,next:NextFunction)=>{
-  try{
+const handleGetPlaceDetails = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
     const latitude = req.query.latitude;
     const longitude = req.query.longitude;
- const result = await fetch(
+    const result = await fetch(
       `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}`,
     );
     res.status(httpStatus.OK).json({
@@ -96,15 +100,14 @@ const handleGetPlaceDetails=async(req:Request,res:Response,next:NextFunction)=>{
       message: 'Successfully Retrieved Place Details!',
       result: await result.json(),
     });
-  }catch(error)
-  {
-    next(error)
+  } catch (error) {
+    next(error);
   }
-}
+};
 
 const geoControllers = {
   handleGetPointOfInterest,
   handleGetCurrentWeather,
-  handleGetPlaceDetails
+  handleGetPlaceDetails,
 };
 export default geoControllers;
