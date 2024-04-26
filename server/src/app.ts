@@ -1,8 +1,14 @@
 import express, { Application, Request, Response } from 'express';
+import geoRoutes from './routes/geo.route';
 const app: Application = express();
 
+/*-------------APPLICATION ROOT-------------*/
+
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello From Node Typescript Clean Template Application!');
+  res.send('Hello From Arekta Team!');
 });
+
+/*-----------------GEO API-----------------*/
+app.use('/api/v1', geoRoutes);
 
 export default app;

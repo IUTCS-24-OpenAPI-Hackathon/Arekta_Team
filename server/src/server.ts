@@ -4,8 +4,8 @@ import config from './app/config/config';
 async function main() {
   try {
     // await myDatabase.connect (config.database_url as string)
-    app.listen(config.port, () => {
-      console.log(`Example app listening on port ${config.port}`);
+    app.listen(2600, () => {
+      console.log(`Example app listening on port 2600`);
     });
   } catch (error) {
     console.log(error);
