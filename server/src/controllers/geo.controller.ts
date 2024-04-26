@@ -60,7 +60,31 @@ const handleGetPointOfInterest = async (
   }
 };
 
+const handleGetCurrentWeather = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const latitude = req.query.latitude;
+    const longitude = req.query.longitude;
+    const appid = 'fbe36884ea5883d9fcde03d17b9cf6bf';
+    const result = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${appid}`,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Successfully Retrieved Current Weather Details!',
+      result: await result.json(),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const geoControllers = {
   handleGetPointOfInterest,
+  handleGetCurrentWeather,
 };
 export default geoControllers;
