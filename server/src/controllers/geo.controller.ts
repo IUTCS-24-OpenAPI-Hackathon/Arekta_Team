@@ -105,9 +105,32 @@ const handleGetPlaceDetails = async (
   }
 };
 
+const handleGetPlaceFromQuery = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const q = req.query.q;
+
+    const result = await fetch(
+      `https://nominatim.openstreetmap.org/search?q=${q}&format=json`,
+    );
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'Successfully Retrieved Place Details!',
+      result: await result.json(),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const geoControllers = {
   handleGetPointOfInterest,
   handleGetCurrentWeather,
   handleGetPlaceDetails,
+  handleGetPlaceFromQuery,
 };
 export default geoControllers;
