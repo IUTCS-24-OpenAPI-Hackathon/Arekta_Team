@@ -1,8 +1,10 @@
+import { ObjectId } from 'mongoose';
+
 export interface IAttraction {
     image: string,
     description: string,
     review: string,
     comment: string,
     experience: string,
-    owner: string
+    owner: { type: ObjectId; ref: string }; 
 }
