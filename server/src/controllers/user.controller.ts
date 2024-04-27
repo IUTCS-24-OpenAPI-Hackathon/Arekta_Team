@@ -19,7 +19,22 @@ const handleCreateNewUser = async (
   }
 };
 
+const handleSignInUser=async(req:Request,res:Response,next:NextFunction)=>{
+  try {
+    const { email,password } = req.body;
+    const user = await userServices.signInUserIntoDB(email,password)
+    res.status(200).json({
+      success: true,
+      message: 'successfully sign in user',
+      user,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 const userControllers = {
   handleCreateNewUser,
+  handleSignInUser
 };
 export default userControllers;
