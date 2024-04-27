@@ -3,7 +3,6 @@ import { Input } from '@/components/ui/input'
 import { useEffect, useMemo, useState } from 'react'
 import Map, {
   Marker,
-  Popup,
   NavigationControl,
   FullscreenControl,
   ScaleControl,
@@ -12,6 +11,8 @@ import Map, {
 import { toast } from 'sonner'
 import Pin from './Pin'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import PlaceDetailsModal from '@/components/modal/PlaceDetailsModal'
+import NearestData from './NearestData'
 
 const TOKEN =
   'pk.eyJ1IjoiYWxhbWluODczMyIsImEiOiJjbHZndnd5MHYwdmllMmtwNTBjMDA4Ymk2In0.QVTrogk-akJwfVR2rHEV-g'
@@ -19,12 +20,14 @@ const GetUserLocation = () => {
   const [location, setLocation] = useState({
     latitude: '',
     longitude: '',
-    range: 1000,
+    range: 2000,
   })
   const [nearestAres, setNearestAreas] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [popupInfo, setPopupInfo] = useState(null)
-  console.log(popupInfo)
+  const [openModal, setOpenModal] = useState(false)
+  const [tab, setTab] = useState('list')
+  // console.log(popupInfo)
   // get user geo location
   const getUserLocation = () => {
     if (navigator.geolocation) {
@@ -93,6 +96,20 @@ const GetUserLocation = () => {
     }
   }
 
+  const getWeatherData = async () => {
+    try {
+      setIsLoading(true)
+      const res = await fetch(
+        `http://localhost:2600/api/v1/current-weather/?latitude=${location.latitude}&longitude=${location.longitude}`,
+      )
+      const data = await res.json()
+      console.log(data)
+      setIsLoading(false)
+    } catch (error) {
+      setIsLoading(false)
+      console.log(error.message)
+    }
+  }
   const pins = useMemo(
     () =>
       nearestAres.map((city, index) => {
@@ -103,10 +120,9 @@ const GetUserLocation = () => {
             latitude={city.lat}
             anchor='bottom'
             onClick={e => {
-              // If we let the click event propagates to the map, it will immediately close the popup
-              // with `closeOnClick: true`
               e.originalEvent.stopPropagation()
               setPopupInfo(city)
+              setOpenModal(true)
             }}
           >
             <Pin />
@@ -119,12 +135,25 @@ const GetUserLocation = () => {
   useEffect(() => {
     if (location.latitude) {
       getNearestData()
+      getWeatherData()
     }
   }, [location.latitude])
   return (
     <section className=''>
+      {/* tab */}
+
       <div className='grid grid-cols-12 gap-5 lg:flex-row'>
-        <div className='flex flex-col w-full col-span-4 m-2'>
+        <div className='flex flex-col w-full col-span-12 m-2 lg:col-span-4'>
+          <div>
+            <div className='flex items-center mb-2 border divide-x-2 max-w-52'>
+              <h4 onClick={() => setTab('list')} className='w-full text-center cursor-pointer'>
+                List
+              </h4>
+              <h4 onClick={() => setTab('map')} className='w-full text-center cursor-pointer'>
+                Map
+              </h4>
+            </div>
+          </div>
           <div>
             <form
               onSubmit={handleSubmitForm}
@@ -162,49 +191,51 @@ const GetUserLocation = () => {
         </div>
         {/* nearest data */}
 
-        <div className='col-span-8'>
-          <Map
-            mapLib={import('mapbox-gl')}
-            initialViewState={{
-              latitude: 25.1634,
-              longitude: 92.0175,
-              zoom: 7,
-              bearing: 0,
-              pitch: 0,
-            }}
-            mapStyle='mapbox://styles/mapbox/dark-v9'
-            style={{ width: '100%', height: '100vh' }}
-            mapboxAccessToken={TOKEN}
-          >
-            <GeolocateControl position='top-left' />
-            <FullscreenControl position='top-left' />
-            <NavigationControl position='top-left' />
-            <ScaleControl />
+        <div className='col-span-12 lg:col-span-8'>
+          {tab === 'map' && (
+            <Map
+              mapLib={import('mapbox-gl')}
+              initialViewState={{
+                latitude: 23.685,
+                longitude: 90.3563,
+                zoom: 7,
+                bearing: 0,
+                pitch: 0,
+              }}
+              mapStyle='mapbox://styles/mapbox/dark-v9'
+              style={{ width: '100%', height: '100vh' }}
+              mapboxAccessToken={TOKEN}
+            >
+              <GeolocateControl position='top-left' />
+              <FullscreenControl position='top-left' />
+              <NavigationControl position='top-left' />
+              <ScaleControl />
 
-            {pins}
-
-            {popupInfo && (
-              <Popup
-                anchor='top'
-                longitude={Number(popupInfo.longitude)}
-                latitude={Number(popupInfo.latitude)}
-                onClose={() => setPopupInfo(null)}
-              >
-                <div>
-                  {popupInfo.city}, {popupInfo.state} |{' '}
-                  <a
-                    target='_new'
-                    href={`http://en.wikipedia.org/w/index.php?title=Special:Search&search=${popupInfo.city}, ${popupInfo.state}`}
-                  >
-                    Wikipedia
-                  </a>
-                </div>
-                <img width='100%' src={popupInfo.image} />
-              </Popup>
-            )}
-          </Map>
+              {pins}
+            </Map>
+          )}
+          {tab === 'list' && (
+            <div>
+              {nearestAres.map((n, inx) => (
+                <NearestData key={inx} nearestArea={n} />
+              ))}
+            </div>
+          )}
         </div>
+        {/* <div className='w-[500px]'>
+        {
+          
+        }
+        </div> */}
       </div>
+      {openModal && (
+        <PlaceDetailsModal
+          latitude={popupInfo.lat}
+          longitude={popupInfo.longitude}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+        />
+      )}
     </section>
   )
 }
