@@ -26,5 +26,5 @@ const userSchema = new mongoose.Schema<IAttraction>(
   { timestamps: true },
 );
 
-const User = mongoose.model('User', userSchema);
-export default User;
+const Attraction = mongoose.model('Attraction', userSchema);
+export default Attraction;
