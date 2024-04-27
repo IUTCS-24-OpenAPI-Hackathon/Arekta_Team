@@ -231,7 +231,7 @@ const GetUserLocation = () => {
       {openModal && (
         <PlaceDetailsModal
           latitude={popupInfo.lat}
-          longitude={popupInfo.longitude}
+          longitude={popupInfo.lon}
           openModal={openModal}
           setOpenModal={setOpenModal}
         />

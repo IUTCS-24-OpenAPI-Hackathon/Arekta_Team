@@ -16,12 +16,12 @@ const PlaceDetailsModal = ({
 }) => {
   const [placeData, setPlaceData] = useState({})
   const [isLoading, setIsLoading] = useState(false)
-console.log(placeData)
+console.log(longitude)
   const placeDataFetch = async () => {
     try {
       //   setIsLoading(true)
       const res = await fetch(
-        `http://localhost:2600/api/v1/place-details/?latitude=${23.82235}&longitude=${longitude}`,
+        `http://localhost:2600/api/v1/place-details/?latitude=${latitude}&longitude=${longitude}`,
       )
       const data = await res.json()
       console.log(data)
