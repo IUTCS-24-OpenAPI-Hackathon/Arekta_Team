@@ -12,7 +12,16 @@ const createNewUserIntoDB = async (
   return user;
 };
 
+const signInUserIntoDB=async(email:string,password:string)=>{
+  const user=await User.findOne({
+    email,
+    password
+  })
+  return user;
+}
+
 const userServices = {
   createNewUserIntoDB,
+  signInUserIntoDB
 };
 export default userServices;
